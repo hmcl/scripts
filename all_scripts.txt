@@ -1,0 +1,251 @@
+/grid/0/hadoopqe/tools/apache-maven-3.0.4/bin/mvn test -DfailIfNoTests=false -Dstorm.version=1.0.1.2.5.0.0-1116 -Dui.url=http://r6-hugo-storm-1.openstacklocal:8744 -Dstorm.options=java.security.auth.login.config%3D%2Fetc%2Fstorm%2Fconf%2Fclient_jaas.conf,storm.thrift.transport%3Dorg.apache.storm.security.auth.kerberos.KerberosSaslTransportPlugin -Dhdfs.kerberos.principal=hrt_qa@EXAMPLE.COM -Dhdfs.keytab.file=/home/hrt_qa/hadoopqa/keytabs/hrt_qa.headless.keytab -Dtest=SolrTest
+
+
+/grid/0/hadoopqe/tools/apache-maven-3.0.4/bin/mvn
+ test
+ -DfailIfNoTests=false
+ -Dstorm.version=1.0.1.2.5.0.0-1116
+ -Dui.url=http://r6-hugo-storm-1.openstacklocal:8744
+ -Dstorm.options=java.security.auth.login.config%3D%2Fetc%2Fstorm%2Fconf%2Fclient_jaas.conf,storm.thrift.transport%3Dorg.apache.storm.security.auth.kerberos.KerberosSaslTransportPlugin
+ -Dhdfs.kerberos.principal=hrt_qa@EXAMPLE.COM
+ -Dhdfs.keytab.file=/home/hrt_qa/hadoopqa/keytabs/hrt_qa.headless.keytab
+ -Dtest=SolrTest
+
+
+ cat /tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/conf/storm.yaml;
+ cat /tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/conf/storm.yaml;
+ cat /tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/conf/storm.yaml;
+ cat /tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/conf/storm.yaml
+
+mkdir /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs;
+mkdir /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs;
+mkdir /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs;
+mkdir /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs;
+
+ls /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs;
+ls /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs;
+ls /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs;
+ls /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs;
+
+rm -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
+rm -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
+rm -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
+rm -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
+
+rm -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
+rm -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
+rm -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
+rm -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
+
+rm -rf /root/storm-local;
+rm -rf /root/storm-local-1;
+rm -rf /root/storm-local-2;
+rm -rf /root/storm-local-3
+
+tail -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs//supervisor.log
+
+tail -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs//nimbus.log
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list;
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list;
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list;
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list
+
+alias filter="awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail"
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?';
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?';
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?';
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?'
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | head;
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | head;
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | head;
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | head
+
+
+/tmp/hmcl/storm/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n;
+/tmp/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n;
+/tmp/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n;
+/tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n
+
+
+nohup /tmp/hmcl/scripts/st.sh 2>&1 > /tmp/hmcl/scripts/logs/st.nohup.log &
+nohup /tmp/hmcl/scripts/st1.sh 2>&1 > /tmp/hmcl/scripts/logs/st1.nohup.log &
+nohup /tmp/hmcl/scripts/st2.sh 2>&1 > /tmp/hmcl/scripts/logs/st2.nohup.log &
+nohup /tmp/hmcl/scripts/st3.sh 2>&1 > /tmp/hmcl/scripts/logs/st3.nohup.log &
+
+nohup /tmp/hmcl/scripts/kill_st.sh 2>&1 > /tmp/hmcl/scripts/logs/kill_st.nohup.log &
+nohup /tmp/hmcl/scripts/kill_st1.sh 2>&1 > /tmp/hmcl/scripts/logs/kill_st1.nohup.log &
+nohup /tmp/hmcl/scripts/kill_st2.sh 2>&1 > /tmp/hmcl/scripts/logs/kill_st2.nohup.log &
+nohup /tmp/hmcl/scripts/kill_st3.sh 2>&1 > /tmp/hmcl/scripts/logs/kill_st3.nohup.log &
+
+P="(.*?(Uploading|Finished uploading|Activating|Setting new assignment.*?:))";
+grep -Po "$P" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | head;
+grep -Po "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | head;
+grep -Po "$P" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | head;
+grep -Po "$P" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | head
+
+P="(.*?(Uploading|Finished uploading|Activating|Setting new assignment.*?:))";
+grep -Po "$P" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -Po "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -Po "$P" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -Po "$P" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail
+
+P="(.*?(Uploading|Finished uploading|Activating|Setting new assignment.*?:))"
+grep -Po "$P" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep -Po "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep -Po "$P" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep -Po "$P" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+
+P="Activating";
+grep -P "$P" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -P "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -P "$P" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
+grep -P "$P" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail
+
+===
+
+DIR="run4_4x200_ts_clean"
+
+mkdir /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mkdir /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mkdir /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mkdir /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+ls /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+ls /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+ls /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+ls /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+
+cp /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+cp /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+cp /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+cp /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;
+
+DIR="must_set_dir"
+
+=== 
+
+run1_4x200_ts
+
+mkdir /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mkdir /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mkdir /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mkdir /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct* /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+
+mv -f /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+mv -f /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+
+cp /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+cp /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+cp /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+cp /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+
+ls /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+ls /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+ls /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+ls /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/run1_4x200_ts;
+
+scp -i /Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa st.sh root@172.18.128.67:/tmp/hmcl/scripts/st.sh;
+scp -i /Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa st1.sh root@172.18.128.67:/tmp/hmcl/scripts/st1.sh;
+scp -i /Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa st2.sh root@172.18.128.67:/tmp/hmcl/scripts/st2.sh;
+scp -i /Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa st3.sh root@172.18.128.67:/tmp/hmcl/scripts/st3.sh;
+
+ssh -i /Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa root@172.18.128.61 "nohup /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//bin/storm supervisor 2>&1 > /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.nohup.log &"
+
+nohup /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//bin/storm supervisor 2>&1 > /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.nohup.log &
+nohup /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//bin/storm supervisor 2>&1 > /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.nohup.log &
+nohup /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//bin/storm supervisor 2>&1 > /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.nohup.log &
+nohup /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//bin/storm supervisor 2>&1 > /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/supervisor.nohup.log &
+
+grep --color "Setting new assignment for topology id wct_hmcl_c1_106-107" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep --color "Setting new assignment for topology id wct_hmcl_c1_106-107" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep --color "Setting new assignment for topology id wct_hmcl_c1_106-107" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
+grep --color "Setting new assignment for topology id wct_hmcl_c1_106-107" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log
+
+pick 0cab4e9 Topologies for microbenchmarking Storm features
+pick d4447b2 Kafka Spout New Consumer API - Performance Test  - Support properties for KafkaSpout: pollTimeoutMs, offsetCommitPeriodMs, maxUncommittedOffsets
+s ea862dd Kafka Spout New Consumer API - Performance Test  - Cast to Integer because Long gives ClassCastException
+s 1946e23 Kafka Spout New Consumer API - Performance Test  - Read Kafka property "fetch.min.bytes" from Storm config
+s c1c9f02 Kafka Spout New Consumer API - Performance Test  - Rename kafka spout properties
+s ae47967 Kafka Spout New Consumer API - Performance Test  - Fix prefix for Kafka property "fetch.min.bytes"
+s 6fe6419 Kafka Spout New Consumer API - Performance Test  - Support printing metrics to multiple output streams, e.g. to a file and System.out
+s cdbc287 Kafka Spout New Consumer API - Performance Test  - Print test param header
+s 81c6b2e Kafka Spout New Consumer API - Performance Test  - Added newFileAndConsolePrintWriter static factory method
+s 0208651 Kafka Spout New Consumer API - Performance Test  - Write file names
+s 3b715e7 Kafka Spout New Consumer API - Performance Test  - Added results file path
+s 7a8d7fe Kafka Spout New Consumer API - Performance Test  - Fix repeated header
+s 11a5ebf Kafka Spout New Consumer API - Performance Test  - Fix bad path caused by RESULTS_FILE_PATH
+s 9ff2f83 Kafka Spout New Consumer API - Performance Test  - Fix storm-start pom.xml to use project.version
+pick 470a4d5 Kafka Spout New Consumer API  - Log heavy objects with TRACE level
+s 38228e4 Kafka Spout New Consumer API  - Fix logging levels in KafkaSpout
+s 08a67e6 Kafka Spout New Consumer API  - Move "Not Polling" warning from WARN to DEBUG level
+s f5fe43e Kafka Spout New Consumer API  - Moved level from DEBUG to TRACE
+s 86e3cf0 Kafka Spout New Consumer API  - Cleanup log messages.  - Added log timer to throttle messages
+s 85060b8 Kafka Spout New Consumer API  - Further cleanup logs
+s 88b0ee4 Kafka Spout New Consumer API  - Make log messages more meaningful
+s 62b6921 Kafka Spout New Consumer API  - Delete a couple of logs
+pick 3889594 Kafka Spout New Consumer API  - Set default config values for good performance
+
+Kafka Spout New Consumer API - Performance Test
+ - Support properties for KafkaSpout: pollTimeoutMs, offsetCommitPeriodMs, maxUncommittedOffsets
+ - Cast to Integer because Long gives ClassCastException
+ - Read Kafka property "fetch.min.bytes" from Storm config
+ - Rename kafka spout properties
+ - Fix prefix for Kafka property "fetch.min.bytes"
+ - Support printing metrics to multiple output streams, e.g. to a file and System.out
+ - Print test param header
+ - Added newFileAndConsolePrintWriter static factory method
+ - Write file names
+ - Added results file path
+ - Fix repeated header
+ - Fix bad path caused by RESULTS_FILE_PATH
+ - Fix storm-start pom.xml to use project.version
+
+ // =======
+
+ Kafka Spout New Consumer API - Improve Logging
+  - Log heavy objects with TRACE level
+  - Make log messages more meaningful
+  - Added log timer to throttle messages
+  - Delete a couple of logs
+

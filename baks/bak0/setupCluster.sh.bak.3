@@ -1,0 +1,119 @@
+# HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
+HOSTS=(172.18.128.61)
+
+ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
+SECS=3
+
+SSH="ssh -i $ID_RSA root@"
+
+STORM_BASE_CLS="/tmp/hmcl/storm/"
+STORM_HOME_CLS="$STORM_BASE_CLS/apache-storm-0.10.0-SNAPSHOT/"
+STORM_ZIP="apache-storm-0.10.0-SNAPSHOT.zip"
+
+CMDS=("$SSH mkdir -p $STORM_BASE_CLS" # create dir
+    scp_fn $h "/Users/hlouro/Apache/Dev/GitHub/hmcl/storm-apache/storm-dist/binary/target_hwx_HDP-2.3.40/$STORM_ZIP" $STORM_BASE_CLS  # copy zip
+    $SSH "unzip $STORM_BASE_CLS/STORM_ZIP"    # unzip
+    yaml_copy_bak_mv_fn     #copy proper yaml file
+    )
+
+yaml_copy_bak_mv_fn(){
+    YAML_TEST_FILE="storm_local_HDP-2.3.40.yaml"
+    YAML_DIR_LOCAL="/Users/hlouro/Hortonworks/Tasks/EAR/EAR-4185/Reproduce/Yaml/"
+    YAML_DIR_CLS="$STORM_HOME_CLS/conf/"
+
+    echo "Backing up " $YAML_DIR_CLS/storm.yaml
+    $SSH cp $YAML_DIR_CLS/storm.yaml $YAML_DIR_CLS/storm.yaml.bak
+
+    echo "Copying "  $YAML_DIR_LOCAL/$YAML_TEST_FILE to $YAML_DIR_CLS/$YAML_TEST_FILE
+    scp_fn $YAML_DIR_LOCAL/$YAML_TEST_FILE $YAML_DIR_CLS
+
+    echo "Replacing " $YAML_DIR_CLS/storm.yaml " with " $YAML_DIR_CLS/$YAML_TEST_FILE
+    $SSH cp $YAML_DIR_CLS/$YAML_TEST_FILE $YAML_DIR_CLS/storm.yaml
+    echo
+}
+
+scp_fn(){
+    $H=$1
+    $FROM=$2
+    $TO=$3
+    SCP="scp -i $ID_RSA $FROM root@$H:$TO"
+    echo "Executing " $SCP
+    $SCP
+}
+
+ssh_exec_fn(){
+    HOST=$1
+    CMD=$2
+    ssh -i $ID_RSA root@$HOST $CMD
+}
+
+for h in "${HOSTS[@]}"
+do
+    echo $h
+    for c in "${CMDS[@]}"
+    do
+        echo "Executing " $c
+        $c
+    done
+done
+
+exec_cmds_fn(){
+    HOST=$1
+    create_dir_fn $HOST
+    copy_zip_fn $HOST
+
+    unzip_fn $HOST
+
+    ssh_exec_fn $HOST "mkdir -p $STORM_BASE_CLS"
+
+    CMDS=("ssh_fn mkdir -p $STORM_BASE_CLS" # create dir
+        scp_fn $h "/Users/hlouro/Apache/Dev/GitHub/hmcl/storm-apache/storm-dist/binary/target_hwx_HDP-2.3.40/$STORM_ZIP" $STORM_BASE_CLS  # copy zip
+        $SSH "unzip $STORM_BASE_CLS/STORM_ZIP"    # unzip
+        yaml_copy_bak_mv_fn     #copy proper yaml file
+    )
+
+}
+
+create_dir_fn() {
+    $HOST=$1
+    echo "Creating dir " $STORM_BASE_CLS
+    ssh_exec_fn $HOST "mkdir -p $STORM_BASE_CLS"
+}
+
+copy_zip_fn(){
+    HOST=$1
+    FROM="/Users/hlouro/Apache/Dev/GitHub/hmcl/storm-apache/storm-dist/binary/target_hwx_HDP-2.3.40/$STORM_ZIP"  # copy zip
+    TO=$STORM_BASE_CLS
+
+    scp_fn $HOST $FROM $TO
+}
+
+copy_zip_fn(){
+    HOST=$1
+    FROM="/Users/hlouro/Apache/Dev/GitHub/hmcl/storm-apache/storm-dist/binary/target_hwx_HDP-2.3.40/$STORM_ZIP"  # copy zip
+    TO=$STORM_BASE_CLS
+
+    scp_fn $HOST $FROM $TO
+}
+
+# ======= DELETE
+
+for HOST in "${HOSTS[@]}"
+do
+    HOST1=$HOST
+    fn_1
+    fn_2
+done
+
+fn_1(){
+    echo "HOST = " $HOST
+    echo "HOST1 = " $HOST1
+
+    HOST="BLA"
+    HOST1="BLA1"
+}
+
+fn_2(){
+    echo "HOST = " $HOST
+    echo "HOST1 = " $HOST1
+}
