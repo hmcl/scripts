@@ -3,19 +3,18 @@
 #HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
 HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64 172.18.128.67)
 #HOSTS=(172.18.128.62 172.18.128.63 172.18.128.64 172.18.128.67)
-#HOSTS=(172.18.128.61)
+#HOSTS=(172.18.128.67)
 
 ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
-SECS=0
 
-#STORM_BASE_CLUSTER="/tmp/hmcl/storm/"        # MUST BE SET FOR EVERY CLUSTER
-#STORM_BASE_CLUSTER="/tmp/hmcl/storm1/"      # MUST BE SET FOR EVERY CLUSTER
-#STORM_BASE_CLUSTER="/tmp/hmcl/storm2/"      # MUST BE SET FOR EVERY CLUSTER
-STORM_BASE_CLUSTER="/tmp/hmcl/storm3/"      # MUST BE SET FOR EVERY CLUSTER
-1
+STORM_BASE_CLUSTER="/grid/3/hmcl/storm0/"        # MUST BE SET FOR EVERY CLUSTER
+#STORM_BASE_CLUSTER="/grid/3/hmcl/storm1/"      # MUST BE SET FOR EVERY CLUSTER
+#STORM_BASE_CLUSTER="/grid/3/hmcl/storm2/"      # MUST BE SET FOR EVERY CLUSTER
+#STORM_BASE_CLUSTER="/grid/3/hmcl/storm3/"      # MUST BE SET FOR EVERY CLUSTER
+
 STORM_HOME_CLUSTER="$STORM_BASE_CLUSTER/apache-storm-0.10.0-SNAPSHOT/"
 
-STORM_BASE_ROOT_CLUSTER="/tmp/hmcl/storm/"  # used only to reuse zip file -> unzip_to_dir_fn
+STORM_BASE_ROOT_CLUSTER="/grid/3/hmcl/storm0/"  # used only to reuse zip file -> unzip_to_dir_fn
 STORM_ZIP="apache-storm-0.10.0-SNAPSHOT.zip"
 
 set_cmd_print_exec_fn() {
@@ -23,7 +22,6 @@ set_cmd_print_exec_fn() {
     echo " -> Executing " $CMD
     $CMD
     unset CMD
-    sleep $SECS
 }
 
 scp_fn(){
@@ -99,14 +97,14 @@ uninstall_storm_cluster_fn(){
 }
 
 list_hmcl_fn() {
-    ssh_exec_fn "ls -la /tmp/hmcl"
-    ssh_exec_fn "find /tmp/hmcl -name '*.*' | grep -P '\bconf\b'"
+    ssh_exec_fn "ls -la /grid/3/hmcl"
+    ssh_exec_fn "find /grid/3/hmcl -name '*.*' | grep -P '\bconf\b'"
 
 }
 exec_cmds_fn(){
-#    create_dir_fn
+    create_dir_fn
 
-#    copy_zip_fn
+    copy_zip_fn
 
 #    unzip_fn
     unzip_to_dir_fn
