@@ -170,7 +170,7 @@ unzip_nimbus_locally() {
 get_excel_column() {
     PU=".*Uploading"
     echo "Patterns matching = " `grep -Eo "$PU" nimbus.log | awk '{print $2}' | wc -l`
-    grep -Eo "$PU" nimbus.log |  $2} | pbcopy
+    grep -Eo "$PU" nimbus.log |  grep -Eo "$PU" nimbus.log | awk '{print $2}' | pbcopy
 }
 
 build_storm_base_cluster_name_fn() {
