@@ -9,7 +9,10 @@ HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
 ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
 SECS=1
 
-STORM_BASE_CLUSTER="/tmp/hmcl/storm/"
+MAX_CLUSTER_ID=0   # cluster ids go from 0 to $MAX_CLUSTER_ID
+
+STORM_BASE_CLUSTER="/tmp/hmcl/storm"
+STORM_VERSION="apache-storm-0.10.0-SNAPSHOT/"
 #STORM_BASE_CLUSTER="/tmp/hmcl/storm1/"
 #STORM_BASE_CLUSTER="/tmp/hmcl/storm2/"
 #STORM_BASE_CLUSTER="/tmp/hmcl/storm3/"
@@ -29,7 +32,8 @@ ssh_exec_fn(){
 }
 
 start_supervisors_fn() {
-    ssh_exec_fn "nohup $STORM_HOME_CLUSTER/bin/storm supervisor 2>&1 > $STORM_HOME_CLUSTER/logs/supervisor.nohup.log &"
+#    echo "nohup $STORM_BASE_CLUSTER_I/bin/storm supervisor 2>&1 > $STORM_BASE_CLUSTER_I/logs/supervisor.nohup.log &"
+    ssh_exec_fn "nohup $STORM_BASE_CLUSTER_I/bin/storm supervisor 2>&1 > $STORM_BASE_CLUSTER_I/logs/supervisor.nohup.log &"
 }
 
 check_supervisors_fn() {
@@ -68,7 +72,11 @@ kill_workers_fn() {
 }
 
 list_logs_fn() {
-    ssh_exec_fn "ls -la $STORM_HOME_CLUSTER/logs"
+    ssh_exec_fn "ls -la $STORM_BASE_CLUSTER_I/logs"
+}
+
+list_all_logs_exclude_workers_fn() {
+    ssh_exec_fn "find $STORM_BASE_CLUSTER_I/logs -name '*.*' | grep -v wct"
 }
 
 mv_logs_to_fn() {
@@ -108,7 +116,7 @@ remove_logs() {
 }
 
 archive_files() {
-    DIR="run6_4x100_ts_clean_nsc"
+    DIR=$1
 
     ssh_exec_fn "mkdir /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR"
     ssh_exec_fn "mkdir /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
@@ -137,8 +145,8 @@ archive_files() {
 }
 
 cleanup(){
-    kill_supervisors_fn
-    kill_workers_fn
+#    kill_supervisors_fn
+#    kill_workers_fn
     remove_storm_local
     remove_logs
 }
@@ -151,14 +159,32 @@ scp_zip_logs_fn() {
     set_cmd_print_exec_fn "scp -i $ID_RSA root@$HOST:$FROM $TO/$HOST"_"$RUN.zip"
 }
 
+build_storm_base_cluster_name_fn() {
+    i=$1
+    if [ $i == 0 ]; then
+
+        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER"/"$STORM_VERSION"
+    else
+        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER$i"/"$STORM_VERSION"
+    fi
+}
+
 for HOST in "${HOSTS[@]}"
 do
-    archive_files
+    for ((i=0; i<=MAX_CLUSTER_ID; i++));
+    do
+        # This function must always be uncommented
+        build_storm_base_cluster_name_fn $i
+
+#        start_supervisors_fn
+#        list_all_logs_exclude_workers_fn
+        list_logs_fn
+    done
+#    archive_files "run9_1x400_ts_clean_nsc"
 #scp_zip_logs_fn "run4_4x200_ts_clean"
 
-#    check_storm_fn
+    check_storm_fn
 
-#    start_supervisors_fn
 #    check_supervisors_fn
 
 #    kill_supervisors_fn
@@ -172,7 +198,7 @@ do
 #    list_logs_fn
 #    mv_logs_to_fn
 #    list_logs_fn
-#    list_jdk_fn
+#    list_jdk_2fn
 #    set_jdk_fn
 #    cleanup
     echo "---"

@@ -102,6 +102,13 @@ grep -Po "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | 
 grep -Po "$P" /tmp/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail;
 grep -Po "$P" /tmp/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log | tail
 
+### MAC ###
+P="(.*?(Uploading|Finished uploading|Activating|Setting new assignment.*?:))";
+grep -Eo "$P" nimbus.log | tail;
+grep -Eo "$P" nimbus.log | tail;
+grep -Eo "$P" nimbus.log | tail;
+grep -Eo "$P" nimbus.log | tail
+
 P="(.*?(Uploading|Finished uploading|Activating|Setting new assignment.*?:))"
 grep -Po "$P" /tmp/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
 grep -Po "$P" /tmp/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/nimbus.log;
