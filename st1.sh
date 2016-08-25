@@ -4,18 +4,17 @@ HOST=172.18.128.67
 
 ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
 
-STORM_BASE_CLUSTER="/tmp/hmcl/storm1/"
+STORM_BASE_CLUSTER="/grid/3/hmcl/storm1/"
 STORM_HOME_CLUSTER="$STORM_BASE_CLUSTER/apache-storm-0.10.0-SNAPSHOT/"
 
 TPLGY_NAME_PREFIX="wct_hmcl_c1_"
-NUM_TPLGYS=200
+NUM_TPLGYS=100
 
 set_cmd_print_exec_fn() {
     CMD=$1
     echo " -> Executing " $CMD
     $CMD
     unset CMD
-#    sleep $SECS
 }
 
 ssh_exec_fn(){
