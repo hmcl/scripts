@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
-#HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
+HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64)
 #HOSTS=(172.18.128.61 172.18.128.62 172.18.128.63 172.18.128.64 172.18.128.67)
 #HOSTS=(172.18.128.62 172.18.128.63 172.18.128.64 172.18.128.67)
-HOSTS=(172.18.128.67)
+#HOSTS=(172.18.128.67)
 
 ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
 
@@ -74,17 +74,16 @@ yaml_cat_fn(){
     ssh_exec_fn "cat $YAML_DIR_CLUSTER/storm.yaml"
 }
 
-#yaml_copy_revert_fn(){
-##    YAML_TEST_FILE="storm_cluster_HDP-2.3.40.yaml"
-#    YAML_TEST_FILE="storm_cluster_HDP-2.3.40_1.yaml"
-##    YAML_TEST_FILE="storm_cluster_HDP-2.3.40_2.yaml"
-##    YAML_TEST_FILE="storm_cluster_HDP-2.3.40_3.yaml"
-#    YAML_DIR_LOCAL="/Users/hlouro/Hortonworks/Tasks/EAR/EAR-4185/Reproduce/Yaml/"
-#    YAML_DIR_CLUSTER="$STORM_HOME_CLUSTER/conf/"
-#
-#    ssh_exec_fn "cp $YAML_DIR_CLUSTER/storm.yaml.bak $YAML_DIR_CLUSTER/storm.yaml"  # bak yaml
-#    ssh_exec_fn "rm $YAML_DIR_CLUSTER/$YAML_TEST_FILE"
-#}
+yaml_copy_revert_fn(){
+    #Local
+    YAML_TEST_FILE="storm_cluster_HDP-2.3.40_"$1".yaml"
+
+    # Cluster
+    YAML_DIR_CLUSTER="$2/conf/"
+
+    ssh_exec_fn "cp $YAML_DIR_CLUSTER/storm.yaml.bak $YAML_DIR_CLUSTER/storm.yaml"  # revert yaml
+    ssh_exec_fn "rm $YAML_DIR_CLUSTER/$YAML_TEST_FILE"
+}
 
 uninstall_storm_cluster_fn(){
     ssh_exec_fn "rm -rf $STORM_HOME_CLUSTER"
@@ -134,7 +133,7 @@ do
         build_storm_base_cluster_name_fn $i
 
 #        list_dir_fn "$STORM_BASE_CLUSTER_I//$STORM_LEAF_CLUSTER/conf"
-
+#        yaml_copy_revert_fn "$i" "$STORM_BASE_CLUSTER_I"
         install "$i" "$STORM_BASE_CLUSTER_I"
     done
 
