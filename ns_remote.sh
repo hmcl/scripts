@@ -6,8 +6,8 @@ ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67
 
 MAX_CLUSTER_ID=0    # cluster ids go from 0 to $MAX_CLUSTER_ID
 
-STORM_BASE_CLUSTER="/tmp/hmcl/storm"
-STORM_BASE_CLUSTERS=("/tmp/hmcl/storm/","/tmp/hmcl/storm1/","/tmp/hmcl/storm2/","/tmp/hmcl/storm3/")
+STORM_BASE_CLUSTER="/grid/3/hmcl/storm"
+STORM_BASE_CLUSTERS=("/grid/3/hmcl/storm/","/grid/3/hmcl/storm1/","/grid/3/hmcl/storm2/","/grid/3/hmcl/storm3/")
 
 STORM_VERSION="apache-storm-0.10.0-SNAPSHOT/"
 #STORM_HOME_CLUSTER="$STORM_BASE_CLUSTER/apache-storm-0.10.0-SNAPSHOT/"
@@ -90,7 +90,6 @@ zip_logs_scp_fn() {
 }
 
 start_nimbus_fn() {
-#    echo "nohup $1/bin/storm nimbus 2>&1 > $1/logs/nimbus.nohup.log &"
     ssh_exec_fn "nohup $1/bin/storm nimbus 2>&1 > $1/logs/nimbus.nohup.log &"
 }
 
@@ -175,13 +174,8 @@ get_excel_column() {
 
 build_storm_base_cluster_name_fn() {
     i=$1
-    if [ $i == 0 ]; then
-        STORM_I="storm"
-        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER"/"$STORM_VERSION"
-    else
-        STORM_I="storm$i"
-        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER$i"/"$STORM_VERSION"
-    fi
+    STORM_I="storm$i"           # used by method zip_logs_scp_fn. TODO: Fix this
+    STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER$i"/"$STORM_VERSION"
 }
 
 #INDEX must be zero
@@ -196,7 +190,7 @@ do
 #    zip_logs_create_fn "run9_1x400_ts_clean_nsc"
 #    zip_logs_scp_fn "run9_1x400_ts_clean_nsc"
 
-#    start_nimbus_fn $STORM_BASE_CLUSTER_I
+    start_nimbus_fn $STORM_BASE_CLUSTER_I
 #    check_nimbus_fn
 #    kill_nimbus_fn
 #    archive_files "run9_1x400_ts_clean_nsc"
