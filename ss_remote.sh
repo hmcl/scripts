@@ -161,12 +161,7 @@ scp_zip_logs_fn() {
 
 build_storm_base_cluster_name_fn() {
     i=$1
-    if [ $i == 0 ]; then
-
-        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER"/"$STORM_VERSION"
-    else
-        STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER$i"/"$STORM_VERSION"
-    fi
+    STORM_BASE_CLUSTER_I="$STORM_BASE_CLUSTER$i"/"$STORM_VERSION"
 }
 
 for HOST in "${HOSTS[@]}"
