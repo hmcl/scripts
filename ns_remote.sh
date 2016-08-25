@@ -4,7 +4,7 @@ HOST=172.18.128.67
 
 ID_RSA="/Users/hlouro/Hortonworks/Tasks/KafkaSpout/Performance/ssh/172.18.128.67/id_rsa"
 
-MAX_CLUSTER_ID=0    # cluster ids go from 0 to $MAX_CLUSTER_ID
+MAX_CLUSTER_ID=3    # cluster ids go from 0 to $MAX_CLUSTER_ID
 
 STORM_BASE_CLUSTER="/grid/3/hmcl/storm"
 STORM_BASE_CLUSTERS=("/grid/3/hmcl/storm/","/grid/3/hmcl/storm1/","/grid/3/hmcl/storm2/","/grid/3/hmcl/storm3/")
@@ -102,6 +102,10 @@ list_logs_nimbus_fn() {
     ssh_exec_fn "ls -la $STORM_BASE_CLUSTER_I/logs"
 }
 
+create_logs_nimbus_fn() {
+    ssh_exec_fn "mkdir -p $STORM_BASE_CLUSTER_I/logs"
+}
+
 list_all_logs_nimbus_fn() {
     ssh_exec_fn "find $STORM_BASE_CLUSTER_I/logs -name '*.*' | grep clean"
 }
@@ -134,14 +138,13 @@ kill_nimbus_fn() {
 }
 
 remove_storm_local() {
-    ssh_exec_fn "rm -rf /root/storm-local; rm -rf /root/storm-local-1; rm -rf /root/storm-local-2; rm -rf /root/storm-local-3;"
+    ssh_exec_fn "rm -rf /root/storm-local$1"
 }
 
 cleanup(){
     kill_nimbus_fn
-    remove_storm_local
+    remove_storm_local $1
     remove_logs
-    break
 }
 
 archive_files() {
@@ -190,18 +193,20 @@ do
 #    zip_logs_create_fn "run9_1x400_ts_clean_nsc"
 #    zip_logs_scp_fn "run9_1x400_ts_clean_nsc"
 
-    start_nimbus_fn $STORM_BASE_CLUSTER_I
-#    check_nimbus_fn
+#    start_nimbus_fn $STORM_BASE_CLUSTER_I
+#    create_logs_nimbus_fn $STORM_BASE_CLUSTER_I
+    check_nimbus_fn
 #    kill_nimbus_fn
+#    list_logs_nimbus_fn
 #    archive_files "run9_1x400_ts_clean_nsc"
+#    cleanup $i
+
 #    list_all_logs_nimbus_fn
-    list_logs_nimbus_fn
 #    tail_logs_nimbus_fn
 #    remove_storm_local
 #    remove_logs
 #    zip_logs_fn "run4_4x200_ts_clean run5_4x100_ts_clean_nsc run6_4x100_ts_clean_nsc"
 #    zip_logs_scp_fn "run4_4x200_ts_clean"
-#    cleanup
 #    scp_logs_fn "run3_4x200_ts_spsoom"
     echo "---"
 done

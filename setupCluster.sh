@@ -100,14 +100,15 @@ find_all_dir_fn() {
 }
 
 install(){
-    create_dir_fn "$2"
+#    create_dir_fn "$2"
 
-    copy_zip_fn "$2"
+#    copy_zip_fn "$2"
 
-    unzip_fn "$2"
+#    unzip_fn "$2"
 #    unzip_to_dir_fn "$2"
 
     yaml_copy_bak_mv_fn "$1" "$2/$STORM_LEAF_CLUSTER"
+    break
 }
 
 ## TODO
@@ -132,9 +133,9 @@ do
         # This function must always be uncommented
         build_storm_base_cluster_name_fn $i
 
-        list_dir_fn "$STORM_BASE_CLUSTER_I//$STORM_LEAF_CLUSTER/conf"
+#        list_dir_fn "$STORM_BASE_CLUSTER_I//$STORM_LEAF_CLUSTER/conf"
 
-#        install "$i" "$STORM_BASE_CLUSTER_I"
+        install "$i" "$STORM_BASE_CLUSTER_I"
     done
 
 # Probably I don't need this anymore. Check
