@@ -61,7 +61,7 @@ alias filter="awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n |
 /grid/3/hmcl/storm0/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
 /grid/3/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
 /grid/3/hmcl/storm2/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
-/grid/3/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail
+/grid/3/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/bin/storm list | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
 
 /grid/3/hmcl/storm0/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
 /grid/3/hmcl/storm1/apache-storm-0.10.0-SNAPSHOT/bin/storm list | grep -P 'Topology_name|wct_.*?' | awk '{print $1}' | awk '{split($0,a,"_"); print a[4]}' | sort -n | tail;
