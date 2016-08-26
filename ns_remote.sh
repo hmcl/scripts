@@ -138,7 +138,7 @@ kill_nimbus_fn() {
 }
 
 remove_storm_local() {
-    ssh_exec_fn "rm -rf /root/storm-local$1"
+    ssh_exec_fn "rm -rf /root/storm-local-$1"
 }
 
 cleanup(){
@@ -163,10 +163,10 @@ archive_files() {
 }
 
 unzip_nimbus_locally() {
-    RUN=run8_4x100_ts_clean_nsc
+    RUN="run10_4x100_ts_clean_nsc_1slt"
     unzip $RUN.zip;
-    mv tmp/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/logs/$RUN/nimbus.log ./;
-    rm -rf tmp/;
+    mv grid/3/hmcl/storm3/apache-storm-0.10.0-SNAPSHOT/logs/$RUN/nimbus.log ./;
+    rm -rf grid/;
 }
 
 get_excel_column() {
@@ -190,17 +190,18 @@ do
 
 #    zip_logs_create_fn "run4_4x200_ts_clean run5_4x100_ts_clean_nsc run6_4x100_ts_clean_nsc"
 #    zip_logs_scp_fn "run4_4x200_ts_clean run5_4x100_ts_clean_nsc run6_4x100_ts_clean_nsc"
-#    zip_logs_create_fn "run9_1x400_ts_clean_nsc"
-#    zip_logs_scp_fn "run9_1x400_ts_clean_nsc"
 
-#    start_nimbus_fn $STORM_BASE_CLUSTER_I
-#    create_logs_nimbus_fn $STORM_BASE_CLUSTER_I
+
     check_nimbus_fn
+#    start_nimbus_fn $STORM_BASE_CLUSTER_I
 #    kill_nimbus_fn
 #    list_logs_nimbus_fn
-#    archive_files "run9_1x400_ts_clean_nsc"
+#    archive_files "run13_4x100_ts_clean_nsc_zkp_mcc_0"
+#    zip_logs_create_fn "run13_4x100_ts_clean_nsc_zkp_mcc_0"
+#    zip_logs_scp_fn "run13_4x100_ts_clean_nsc_zkp_mcc_0"
 #    cleanup $i
 
+#    create_logs_nimbus_fn $STORM_BASE_CLUSTER_I
 #    list_all_logs_nimbus_fn
 #    tail_logs_nimbus_fn
 #    remove_storm_local
