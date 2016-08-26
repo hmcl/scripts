@@ -97,56 +97,36 @@ print_java_home_fn() {
 }
 
 remove_storm_local() {
-    ssh_exec_fn "rm -rf /root/storm-local; rm -rf /root/storm-local-1; rm -rf /root/storm-local-2; rm -rf /root/storm-local-3;"
+    ssh_exec_fn "rm -rf /root/storm-local-$1"
 }
 
 remove_logs() {
     ssh_exec_fn "
-        rm -f /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
-        rm -f /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
-        rm -f /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
-        rm -f /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log;
-
-        rm -f /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
-        rm -f /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
-        rm -f /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
-        rm -f /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct*;
+        rm -f $STORM_BASE_CLUSTER_I//logs/*.log;
+        rm -f $STORM_BASE_CLUSTER_I//logs/*.log.*;
+        rm -f $STORM_BASE_CLUSTER_I//logs/wct*;
     "
 }
 
 archive_files() {
-    DIR=$1
+    RUN=$1
 
-    ssh_exec_fn "mkdir /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR"
-    ssh_exec_fn "mkdir /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mkdir /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mkdir /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
+    ssh_exec_fn "mkdir $STORM_BASE_CLUSTER_I//logs/$RUN;"
 
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
+    ssh_exec_fn "mv -f $STORM_BASE_CLUSTER_I//logs/*.log $STORM_BASE_CLUSTER_I//logs/$RUN;"
+    ssh_exec_fn "mv -f $STORM_BASE_CLUSTER_I//logs/*.log.* $STORM_BASE_CLUSTER_I//logs/$RUN;"
+    ssh_exec_fn "mv -f $STORM_BASE_CLUSTER_I//logs/wct* $STORM_BASE_CLUSTER_I//logs/$RUN;"
 
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/*.log.* /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
+    ssh_exec_fn "ls $STORM_BASE_CLUSTER_I//logs/$RUN;"
 
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/wct* /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/wct* /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/wct* /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "mv -f /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/wct* /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-
-    ssh_exec_fn "ls /grid/3/hmcl/storm//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "ls /grid/3/hmcl/storm1//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "ls /grid/3/hmcl/storm2//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
-    ssh_exec_fn "ls /grid/3/hmcl/storm3//apache-storm-0.10.0-SNAPSHOT//logs/$DIR;"
+    SCPT_DIR="/tmp/hmcl/scripts/"
+    ssh_exec_fn "mkdir -p $SCPT_DIR/logs/$RUN && mv -f $SCPT_DIR/logs/*.log $SCPT_DIR/logs/$RUN"
 }
 
 cleanup(){
 #    kill_supervisors_fn
 #    kill_workers_fn
-    remove_storm_local
+    remove_storm_local $1
     remove_logs
 }
 
@@ -167,25 +147,26 @@ for HOST in "${HOSTS[@]}"
 do
     for ((i=0; i<=MAX_CLUSTER_ID; i++));
     do
-        # This function must always be uncommented
+        # This function must ALWAYS be uncommented
         build_storm_base_cluster_name_fn $i
 
-#        start_supervisors_fn
+        start_supervisors_fn
 #        list_all_logs_exclude_workers_fn
 #        list_logs_fn
+#        archive_files "run13_4x100_ts_clean_nsc_zkp_mcc_0"
+#        cleanup $i
     done
-#    archive_files "run9_1x400_ts_clean_nsc"
 #scp_zip_logs_fn "run4_4x200_ts_clean"
 
 #    check_storm_fn
 
-    check_supervisors_fn
-
-#    kill_supervisors_fn
 #    remove_storm_local
 #    remove_logs
 
+#    check_supervisors_fn
 #    check_workers_fn
+
+#    kill_supervisors_fn
 #    kill_workers_fn
 
 #    print_java_home_fn
@@ -194,6 +175,5 @@ do
 #    list_logs_fn
 #    list_jdk_2fn
 #    set_jdk_fn
-#    cleanup
     echo "---"
 done
